@@ -51,9 +51,17 @@ export default {
         tooltip: {
           trigger: 'axis',
           transitionDuration: 0,
+          backgroundColor:'#050224',
+          formatter: function (params){
+            return `<strong>${params[0].axisValue}</strong> <br> <p>Team Performance Index: ${params[0].value}%</p> `
+          },
           confine: false,
           hideDelay: 0,
-          padding: 0,
+          padding: 20,
+          textStyle: {
+            color: 'white',
+            align:'center'
+        }
         },
         grid: {
           left: "30px",
@@ -81,18 +89,43 @@ export default {
           axisTick: { show: true },
           splitLine: { show: true },
         },
+        visualMap: {
+          show: true,
+          top:50,
+          right:0,
+          data:this.yAxisData,
+          dimension: 1,
+          pieces: [
+            {
+              lte: 50,
+              color: 'red'
+            },
+            {
+              gt: 50,
+              lte: 80,
+              color: 'yellow'
+            },
+            {
+              gt: 80,
+              lte: 100,
+              color: 'green'
+            },
+          ]
+        },
         series: [
           {
             data: this.yAxisData,
             type: "line",
             symbol: "circle",
+            name: 'Team Performance Index: ',
             symbolSize: 2,
             cursor: "default",
             lineStyle: {
               width: 2,
-            },
+            }
           },
         ],
+       
       };
     },
 
@@ -102,6 +135,10 @@ export default {
 
     yAxisData() {
       return this.allData.map((item) => +item.performance * 100);
+    },
+    performanceLow() {
+      const data = this.allData.filter((item) => +item.performance * 100 < 50);
+      return data
     },
   },
 
