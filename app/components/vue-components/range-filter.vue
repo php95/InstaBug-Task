@@ -22,8 +22,7 @@ export default {
       ...mapActions(['filterData']),
       blur (range) {
         if(range){
-        console.log({range});
-        this.filterData(range);
+          this.filterData(range);
         }
       }
     },
